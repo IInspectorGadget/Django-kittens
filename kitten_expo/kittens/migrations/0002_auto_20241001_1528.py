@@ -8,6 +8,7 @@ from django.db import migrations
 def create_initial_data(apps, schema_editor):
     Breed = apps.get_model('kittens', 'Breed')
     Kitten = apps.get_model('kittens', 'Kitten')
+    KittenRating = apps.get_model('kittens', 'KittenRating')
     User = apps.get_model('auth', 'User')
 
     # Создание нескольких пород
@@ -16,12 +17,28 @@ def create_initial_data(apps, schema_editor):
     sphynx = Breed.objects.create(name='Sphynx')
 
     # Создание пользователя, который будет владельцем котят
-    owner = User.objects.create(username="user", password="password")
+    user1 = User.objects.create(username="user1", password="user1")
+    user2 = User.objects.create(username="user2", password="user2")
 
     # Создание котят
-    Kitten.objects.create(breed=siamese, color='White', age_in_months=5, description='Very playful and active', owner=owner)
-    Kitten.objects.create(breed=persian, color='Black', age_in_months=7, description='Calm and quiet', owner=owner)
-    Kitten.objects.create(breed=sphynx, color='Pink', age_in_months=3, description='Friendly and curious', owner=owner)
+    kitten1 = Kitten.objects.create(breed=siamese, color='White', age_in_months=5, description='Very playful and active',
+                          owner=user1)
+    kitten2 = Kitten.objects.create(breed=persian, color='Black', age_in_months=7, description='Calm and quiet', owner=user1)
+    kitten3 = Kitten.objects.create(breed=sphynx, color='Pink', age_in_months=3, description='Friendly and curious', owner=user1)
+
+    # Создание котят
+    kitten4 = Kitten.objects.create(breed=siamese, color='White', age_in_months=5, description='Very playful and active',
+                          owner=user2)
+    kitten5 = Kitten.objects.create(breed=persian, color='Black', age_in_months=7, description='Calm and quiet', owner=user2)
+    kitten6 = Kitten.objects.create(breed=sphynx, color='Pink', age_in_months=3, description='Friendly and curious', owner=user2)
+
+    KittenRating.objects.create(kitten=kitten1, user=user2, rating=3)
+    KittenRating.objects.create(kitten=kitten2, user=user2, rating=4)
+    KittenRating.objects.create(kitten=kitten3, user=user2, rating=5)
+
+    KittenRating.objects.create(kitten=kitten4, user=user1, rating=3)
+    KittenRating.objects.create(kitten=kitten5, user=user1, rating=4)
+    KittenRating.objects.create(kitten=kitten6, user=user1, rating=5)
 
 class Migration(migrations.Migration):
 
