@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:13
+    image: postgres:15
     environment:
       POSTGRES_DB: test1
       POSTGRES_USER: admin
@@ -12,8 +12,7 @@ services:
 
   web:
     build: .
-    command: >
-      sh -c "python manage.py migrate && pytest &&  python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "./wait-for-it.sh db:5432 -- python manage.py migrate && pytest && if [ $? -eq 0 ]; then python manage.py runserver 0.0.0.0:8000; else echo 'Migrations or tests failed.' && exit 1; fi"
     volumes:
       - .:/app
     ports:
