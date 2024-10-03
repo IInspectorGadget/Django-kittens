@@ -21,6 +21,9 @@ cd kitten_expo
 docker compose -f docker-compose.yml up -d --build
 ```
 
+## Ссылка на API
+### http://localhost:8000/swagger
+
 ## Данные для получения токена
 ### Получите токен в ручке /token/ с данными:
 {
