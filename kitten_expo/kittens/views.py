@@ -13,6 +13,18 @@ class BreedViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Breed.objects.all()
     serializer_class = BreedSerializer
 
+    @swagger_auto_schema(
+        operation_description="Получить список всех пород"
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Получить информацию о конкретной породе"
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
 
 class KittenViewSet(viewsets.ModelViewSet):
     queryset = Kitten.objects.all()
@@ -27,7 +39,7 @@ class KittenViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
     @swagger_auto_schema(
-        operation_description="Получить список котят с фильтрами",
+        operation_description="Получить список котят с фильтрами по породе",
         manual_parameters=[
             openapi.Parameter(
                 'breed_id',
@@ -40,6 +52,36 @@ class KittenViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
+    @swagger_auto_schema(
+        operation_description="Создать нового котенка"
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Получить информацию о конкретном котенке"
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Обновить информацию о котенке"
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Частично обновить информацию о котенке"
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Удалить котенка"
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
 
 class KittenRatingViewSet(viewsets.ModelViewSet):
     queryset = KittenRating.objects.all()
@@ -49,6 +91,9 @@ class KittenRatingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @swagger_auto_schema(
+        operation_description="Оценить котенка"
+    )
     def create(self, request, *args, **kwargs):
         kitten = Kitten.objects.get(pk=request.data['kitten'])
 
@@ -56,3 +101,33 @@ class KittenRatingViewSet(viewsets.ModelViewSet):
             raise ValidationError("Вы не можете оценивать своих котят")
 
         return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Получить список всех оценок котят"
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Получить информацию о конкретной оценке"
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Обновить информацию о конкретной оценке"
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Частично обновить информацию о конкретной оценке"
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="Удалить оценку"
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
